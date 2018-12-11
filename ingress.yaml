@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: registry-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: docker-registry
+spec:
+  tls:
+  - hosts:
+    - <HOST-NAME>
+    secretName: custom-tls-cert
+  rules:
+    - host: <HOST-NAME>
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: docker-registry
+            servicePort: 5000
